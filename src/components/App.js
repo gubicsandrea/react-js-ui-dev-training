@@ -1,31 +1,32 @@
-import React, { Component } from 'react';
-import '../css/App.css';
+import React, { Component } from "react";
+import "../css/App.css";
 
-import AddAppointments from './AddAppointments';
-import SearchAppointments from './SearchAppointments';
-import ListAppointments from './ListAppointments';
+import AddAppointments from "./AddAppointments";
+import SearchAppointments from "./SearchAppointments";
+import ListAppointments from "./ListAppointments";
 
 class App extends Component {
-
   constructor() {
     super();
     this.state = {
-      myAppointments: []
-    }
+      myAppointments: [],
+      lastIndex: 0
+    };
   }
 
   componentDidMount() {
-    fetch('./data.json')
-    .then(response => response.json())
-    .then(result => {
-      const appointments = result.map(item => {
-        return item;
-      })
-      this.setState({
-        myAppointments: appointments
-      })
-    });
- 
+    fetch("./data.json")
+      .then(response => response.json())
+      .then(result => {
+        const appointments = result.map(item => {
+          item.aptId = this.state.lastIndex;
+          this.setState({ lastIndex: this.state.lastIndex + 1 });
+          return item;
+        });
+        this.setState({
+          myAppointments: appointments
+        });
+      });
   }
 
   render() {
